@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shooting Stars & Glowing Candle</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: black;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            flex-direction: column;
+        }
+
+        .sky {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            transition: opacity 2s ease-in-out;
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+            transform: rotate(-30deg);
+            opacity: 0.8;
+            animation: shooting 2s linear infinite;
+        }
+
+        @keyframes shooting {
+            from { transform: translateX(0) translateY(0) rotate(-30deg); opacity: 1; }
+            to { transform: translateX(300px) translateY(150px) rotate(-30deg); opacity: 0; }
+        }
+
+        .star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        /* شمع */
+        .candle-container {
+            display: none;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .candle {
+            position: relative;
+            width: 100px;
+            height: 280px;
+            background-color: white;
+            border-radius: 30px;
+            box-shadow: 0px 0px 80px rgba(255, 200, 120, 1), 
+                        0px 0px 100px rgba(255, 150, 50, 0.8), 
+                        0px 0px 150px rgba(255, 100, 0, 0.6);
+            animation: glow 1.5s infinite alternate ease-in-out;
+        }
+
+        .light-reflection {
+            position: absolute;
+            width: 300px;
+            height: 80px;
+            background: radial-gradient(circle, rgba(255, 200, 100, 0.6) 10%, rgba(0, 0, 0, 0) 80%);
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.5;
+        }
+
+        /* شعله */
+        .flame {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            width: 60px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(255, 180, 80, 1) 20%, rgba(255, 69, 0, 0.9) 60%, transparent 100%);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            animation: flicker 1s infinite alternate ease-in-out;
+            box-shadow: 0px 0px 80px rgba(255, 140, 0, 0.9);
+        }
+         /* جرقه‌های متحرک */
+         .spark {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: rgba(255, 215, 0, 0.9);
+            border-radius: 50%;
+            opacity: 0;
+            animation: sparkle 1.5s infinite ease-in-out;
+        }
+
+        .spark1 { top: -130px; left: -40px; animation-delay: 0.2s; }
+        .spark2 { top: -150px; left: 50px; animation-delay: 0.4s; }
+        .spark3 { top: -120px; left: 15px; animation-delay: 0.6s; }
+        .spark4 { top: -140px; left: -20px; animation-delay: 0.8s; }
+        .spark5 { top: -155px; left: 35px; animation-delay: 1s; }
+
+        /* افکت‌های شعله و درخشش */
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scale(1); opacity: 1; }
+            50% { transform: translateX(-50%) scale(1.1); opacity: 0.9; }
+            100% { transform: translateX(-50%) scale(0.9); opacity: 1; }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0px 0px 80px rgba(255, 200, 120, 0.8), 
+                           0px 0px 100px rgba(255, 150, 50, 0.6), 
+                           0px 0px 120px rgba(255, 100, 0, 0.5); }
+            100% { box-shadow: 0px 0px 100px rgba(255, 220, 150, 1), 
+                              0px 0px 120px rgba(255, 180, 80, 0.9), 
+                              0px 0px 180px rgba(255, 120, 30, 0.7); }
+        }
+        @keyframes sparkle {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-30px); opacity: 0; }
+        }
+
+        /* افکت محو شدن */
+        .fade-out {
+            opacity: 0 !important;
+            transition: opacity 2s ease-in-out;
+        }
+
+        /* متن نهایی */
+        .message {
+    position: absolute;
+    opacity: 0;
+    font-size: 35px;
+    color: white;
+    font-family: "Georgia", "Times New Roman", serif; /* فونت زیبا */
+    font-weight: bold; /* بولد */
+    font-style: italic; /* ایتالیک */
+    text-align: center;
+    text-shadow: 0px 0px 10px rgba(255, 200, 120, 0.8),
+                 0px 0px 20px rgba(255, 150, 50, 0.7),
+                 0px 0px 30px rgba(255, 100, 0, 0.6); /* درخشش اولیه */
+    animation: glow 1.5s infinite alternate ease-in-out;
+    transition: opacity 2s ease-in-out;
+}
+
+/* انیمیشن درخشش */
+@keyframes glow {
+    0% {
+        text-shadow: 0px 0px 10px rgba(255, 200, 120, 0.6),
+                     0px 0px 20px rgba(255, 150, 50, 0.5),
+                     0px 0px 30px rgba(255, 100, 0, 0.4);
+    }
+    100% {
+        text-shadow: 0px 0px 20px rgba(255, 220, 150, 1),
+                     0px 0px 30px rgba(255, 180, 80, 0.9),
+                     0px 0px 40px rgba(255, 120, 30, 0.8);
+    }
+}
+    </style>
+</head>
+<body>
+
+    <div class="sky" id="sky"></div>
+
+        <!-- شمع با درخشش قوی‌تر -->
+        <div class="candle-container" id="candleContainer">
+            <div class="candle">
+                <div class="flame"></div>
+                <div class="light-reflection"></div>
+                <div class="spark spark1"></div>
+                <div class="spark spark2"></div>
+                <div class="spark spark3"></div>
+                <div class="spark spark4"></div>
+                <div class="spark spark5"></div>
+            </div>
+        </div>
+
+    <div class="candle-container" id="candleContainer">
+        <div class="candle">
+            <div class="flame"></div>
+            <div class="light-reflection"></div>
+        </div>
+    </div>
+
+    <div class="message" id="message">You are my light 💡</div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const sky = document.getElementById("sky");
+            const candleContainer = document.getElementById("candleContainer");
+            const message = document.getElementById("message");
+
+            // ایجاد ستاره‌های دنباله‌دار
+            function createShootingStars() {
+                for (let i = 0; i < 10; i++) {
+                    let star = document.createElement("div");
+                    star.classList.add("shooting-star");
+                    star.style.top = Math.random() * window.innerHeight + "px";
+                    star.style.left = Math.random() * window.innerWidth + "px";
+                    star.style.animationDuration = (Math.random() * 2 + 1) + "s";
+                    sky.appendChild(star);
+                }
+            }
+
+            // ایجاد ستاره‌های ثابت
+            function createStaticStars() {
+                for (let i = 0; i < 50; i++) {
+                    let star = document.createElement("div");
+                    star.classList.add("star");
+                    star.style.top = Math.random() * window.innerHeight + "px";
+                    star.style.left = Math.random() * window.innerWidth + "px";
+                    star.style.opacity = Math.random();
+                    sky.appendChild(star);
+                }
+            }
+
+            createStaticStars();
+            createShootingStars();
+
+            setTimeout(() => {
+                candleContainer.style.display = "flex";
+                setTimeout(() => {
+                    candleContainer.style.opacity = 1;
+                }, 100);
+
+                setTimeout(() => {
+                    sky.classList.add("fade-out");
+                    candleContainer.classList.add("fade-out");
+
+                    setTimeout(() => {
+                        message.style.opacity = 1;
+                    }, 2000);
+                }, 3000);
+            }, 5000);
+        });
+    </script>
+
+</body>
+</html>
